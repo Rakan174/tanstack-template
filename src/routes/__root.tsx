@@ -4,7 +4,6 @@ import {
   HeadContent,
   Scripts,
 } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { ConvexClientProvider } from '../convex'
 
 import appCss from '../styles.css?url'
@@ -20,7 +19,19 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Chat Starter',
+        title: 'NexusAI — AI-Powered Content Tools for Business',
+      },
+      {
+        name: 'description',
+        content: 'Generate blogs, ads, emails, social posts and more with AI. 8 specialized tools, 50,000+ users. Start free today.',
+      },
+      {
+        name: 'og:title',
+        content: 'NexusAI — 10x Your Content with AI',
+      },
+      {
+        name: 'og:description',
+        content: 'Generate professional content in seconds with our AI-powered toolkit.',
       },
     ],
     links: [
@@ -34,14 +45,13 @@ export const Route = createRootRoute({
   component: () => (
     <RootDocument>
       <Outlet />
-      <TanStackRouterDevtools />
     </RootDocument>
   ),
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html lang="en">
       <head>
         <HeadContent />
       </head>

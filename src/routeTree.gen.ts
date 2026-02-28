@@ -11,13 +11,41 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as PricingImport } from './routes/pricing'
+import { Route as ChatImport } from './routes/chat'
 import { Route as IndexImport } from './routes/index'
+import { Route as ToolsIndexImport } from './routes/tools/index'
+import { Route as ToolsToolIdImport } from './routes/tools/$toolId'
 
 // Create/Update Routes
+
+const PricingRoute = PricingImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ChatRoute = ChatImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ToolsIndexRoute = ToolsIndexImport.update({
+  id: '/tools/',
+  path: '/tools',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ToolsToolIdRoute = ToolsToolIdImport.update({
+  id: '/tools/$toolId',
+  path: '/tools/$toolId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -32,6 +60,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/chat': {
+      id: '/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatImport
+      parentRoute: typeof rootRoute
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingImport
+      parentRoute: typeof rootRoute
+    }
+    '/tools/': {
+      id: '/tools/'
+      path: '/tools'
+      fullPath: '/tools'
+      preLoaderRoute: typeof ToolsIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/tools/$toolId': {
+      id: '/tools/$toolId'
+      path: '/tools/$toolId'
+      fullPath: '/tools/$toolId'
+      preLoaderRoute: typeof ToolsToolIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -39,32 +95,52 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
+  '/pricing': typeof PricingRoute
+  '/tools': typeof ToolsIndexRoute
+  '/tools/$toolId': typeof ToolsToolIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
+  '/pricing': typeof PricingRoute
+  '/tools': typeof ToolsIndexRoute
+  '/tools/$toolId': typeof ToolsToolIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
+  '/pricing': typeof PricingRoute
+  '/tools/': typeof ToolsIndexRoute
+  '/tools/$toolId': typeof ToolsToolIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/chat' | '/pricing' | '/tools' | '/tools/$toolId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/chat' | '/pricing' | '/tools' | '/tools/$toolId'
+  id: '__root__' | '/' | '/chat' | '/pricing' | '/tools/' | '/tools/$toolId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ChatRoute: typeof ChatRoute
+  PricingRoute: typeof PricingRoute
+  ToolsIndexRoute: typeof ToolsIndexRoute
+  ToolsToolIdRoute: typeof ToolsToolIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ChatRoute: ChatRoute,
+  PricingRoute: PricingRoute,
+  ToolsIndexRoute: ToolsIndexRoute,
+  ToolsToolIdRoute: ToolsToolIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +153,27 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/chat",
+        "/pricing",
+        "/tools/",
+        "/tools/$toolId"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/chat": {
+      "filePath": "chat.tsx"
+    },
+    "/pricing": {
+      "filePath": "pricing.tsx"
+    },
+    "/tools/": {
+      "filePath": "tools/index.tsx"
+    },
+    "/tools/$toolId": {
+      "filePath": "tools/$toolId.tsx"
     }
   }
 }

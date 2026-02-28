@@ -1,6 +1,49 @@
 import { createServerFn } from '@tanstack/react-start'
 import { Anthropic } from '@anthropic-ai/sdk'
 
+export const genAITool = createServerFn({ method: 'POST', response: 'raw' })
+  .validator(
+    (d: { systemPrompt: string; userPrompt: string }) => d,
+  )
+  .handler(async ({ data }) => {
+    const apiKey = process.env.ANTHROPIC_API_KEY
+    if (!apiKey) {
+      throw new Error('Missing API key: Please set ANTHROPIC_API_KEY in your environment variables.')
+    }
+    const anthropic = new Anthropic({ apiKey, timeout: 60000 })
+    try {
+      const stream = await anthropic.messages.stream({
+        model: 'claude-sonnet-4-5-20250929',
+        max_tokens: 4096,
+        system: data.systemPrompt,
+        messages: [{ role: 'user', content: data.userPrompt }],
+      })
+      const encoder = new TextEncoder()
+      const transformedStream = new ReadableStream({
+        async start(controller) {
+          try {
+            for await (const event of stream) {
+              if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+                const chunk = { type: 'content_block_delta', delta: { type: 'text_delta', text: event.delta.text } }
+                controller.enqueue(encoder.encode(JSON.stringify(chunk) + '\n'))
+              }
+            }
+            controller.close()
+          } catch (error) {
+            controller.error(error)
+          }
+        },
+      })
+      return new Response(transformedStream, { headers: { 'Content-Type': 'application/x-ndjson' } })
+    } catch (error) {
+      console.error('Error in genAITool:', error)
+      return new Response(JSON.stringify({ error: 'AI generation failed' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    }
+  })
+
 export interface Message {
   id: string
   role: 'user' | 'assistant'
