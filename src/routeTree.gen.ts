@@ -39,7 +39,7 @@ const IndexRoute = IndexImport.update({
 
 const ToolsIndexRoute = ToolsIndexImport.update({
   id: '/tools/',
-  path: '/tools',
+  path: '/tools/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -74,18 +74,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PricingImport
       parentRoute: typeof rootRoute
     }
-    '/tools/': {
-      id: '/tools/'
-      path: '/tools'
-      fullPath: '/tools'
-      preLoaderRoute: typeof ToolsIndexImport
-      parentRoute: typeof rootRoute
-    }
     '/tools/$toolId': {
       id: '/tools/$toolId'
       path: '/tools/$toolId'
       fullPath: '/tools/$toolId'
       preLoaderRoute: typeof ToolsToolIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/tools/': {
+      id: '/tools/'
+      path: '/tools'
+      fullPath: '/tools'
+      preLoaderRoute: typeof ToolsIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -97,16 +97,16 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/pricing': typeof PricingRoute
-  '/tools': typeof ToolsIndexRoute
   '/tools/$toolId': typeof ToolsToolIdRoute
+  '/tools': typeof ToolsIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/pricing': typeof PricingRoute
-  '/tools': typeof ToolsIndexRoute
   '/tools/$toolId': typeof ToolsToolIdRoute
+  '/tools': typeof ToolsIndexRoute
 }
 
 export interface FileRoutesById {
@@ -114,16 +114,16 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/pricing': typeof PricingRoute
-  '/tools/': typeof ToolsIndexRoute
   '/tools/$toolId': typeof ToolsToolIdRoute
+  '/tools/': typeof ToolsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/chat' | '/pricing' | '/tools' | '/tools/$toolId'
+  fullPaths: '/' | '/chat' | '/pricing' | '/tools/$toolId' | '/tools'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/chat' | '/pricing' | '/tools' | '/tools/$toolId'
-  id: '__root__' | '/' | '/chat' | '/pricing' | '/tools/' | '/tools/$toolId'
+  to: '/' | '/chat' | '/pricing' | '/tools/$toolId' | '/tools'
+  id: '__root__' | '/' | '/chat' | '/pricing' | '/tools/$toolId' | '/tools/'
   fileRoutesById: FileRoutesById
 }
 
@@ -131,16 +131,16 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChatRoute: typeof ChatRoute
   PricingRoute: typeof PricingRoute
-  ToolsIndexRoute: typeof ToolsIndexRoute
   ToolsToolIdRoute: typeof ToolsToolIdRoute
+  ToolsIndexRoute: typeof ToolsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChatRoute: ChatRoute,
   PricingRoute: PricingRoute,
-  ToolsIndexRoute: ToolsIndexRoute,
   ToolsToolIdRoute: ToolsToolIdRoute,
+  ToolsIndexRoute: ToolsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -156,8 +156,8 @@ export const routeTree = rootRoute
         "/",
         "/chat",
         "/pricing",
-        "/tools/",
-        "/tools/$toolId"
+        "/tools/$toolId",
+        "/tools/"
       ]
     },
     "/": {
@@ -169,11 +169,11 @@ export const routeTree = rootRoute
     "/pricing": {
       "filePath": "pricing.tsx"
     },
-    "/tools/": {
-      "filePath": "tools/index.tsx"
-    },
     "/tools/$toolId": {
       "filePath": "tools/$toolId.tsx"
+    },
+    "/tools/": {
+      "filePath": "tools/index.tsx"
     }
   }
 }
