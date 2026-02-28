@@ -1,6 +1,49 @@
 @import "tailwindcss";
 @import "highlight.js/styles/github-dark.css";
 
+/* NexusAI Design System */
+:root {
+  --color-bg: #020617;
+  --color-surface: rgba(255, 255, 255, 0.03);
+  --color-border: rgba(255, 255, 255, 0.06);
+  --color-primary: #7c3aed;
+  --color-primary-light: #a78bfa;
+}
+
+/* Smooth animations */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
+}
+
+/* Glass card effect */
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+}
+
+/* Custom scrollbar for output panels */
+.output-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.output-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.output-scroll::-webkit-scrollbar-thumb {
+  background: rgba(124, 58, 237, 0.3);
+  border-radius: 3px;
+}
+.output-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(124, 58, 237, 0.5);
+}
+
 body {
   @apply m-0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
